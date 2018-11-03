@@ -31,7 +31,7 @@ import 'axios/dist/axios.js'
             },
             {
               title: 'key',
-              key: 'name',
+             /* key: 'name',*/
               align: 'center'
             },
             {
@@ -40,7 +40,10 @@ import 'axios/dist/axios.js'
               align: 'center'
             }
           ],
-          data1: []
+          data1: [
+
+          ]
+
         }
 
       },
@@ -49,7 +52,12 @@ import 'axios/dist/axios.js'
             axios.post('http://localhost:8087/redis/keys', {"pageNow":1,"pageSize":10},{emulateJSON: true})
               .then(function (res) {
                 console.log(res.data.content)
-                this.data1=res.data.content
+                var arr_model=res.data.content;
+               for(var i=0;i<arr_model.length;i++){
+                 this.data1.push({
+                   name:arr_model[i].name,
+                 })
+               }
               })
           },
         handleClearCurrentRow () {

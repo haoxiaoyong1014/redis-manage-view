@@ -1,3 +1,4 @@
+<!--suppress ALL -->
 <template>
   <div class="layout">
     <Layout>
@@ -17,7 +18,6 @@
   </div>
 </template>
 <script>
- /* https://blog.csdn.net/u013144287/article/details/78879044*/
   import axios from 'axios'
   import 'axios/dist/axios.js'
 
@@ -44,11 +44,12 @@
         ],
         data1: [],
         total: 2,
-        pageSize: 10
+        pageSize: 10,
+        pageNuw: 1,
       }
     },
     methods: {
-      getList() {
+      /*getList() {
         axios.post('http://localhost:8087/redis/keys', {"pageNow": 1, "pageSize": this.pageSize}, {emulateJSON: true})
           .then(res => {
             var arr_model = res.data.content.name;
@@ -59,27 +60,30 @@
               })
             }
           })
-      },
-      change: function (page) {
+      },*/
+      change(page) {
+        var vm = this
+        vm.pageNow = page;
+        console.log(page)
         axios.post('http://localhost:8087/redis/keys', {
-          "pageNow": page,
-          "pageSize": this.pageSize
+          "pageNow": vm.pageNow,
+          "pageSize": vm.pageSize
         }, {emulateJSON: true})
           .then(res => {
             var arr_mode = res.data.content.name;
             console.log(arr_mode)
-            this.total = res.data.content.total;
+            vm.total = res.data.content.total;
             for (var i = 0; i < arr_mode.length; i++) {
-              this.data1[i].name=
-                 arr_mode[i]
-
+              vm.data1[i] = {}
+              console.log(arr_mode[1])
+              vm.data1[i].name=arr_mode[i]
             }
+            console.log(vm.data1)
           })
-        console.log(page)
-      }
+      },
     },
-    created: function () {
-      this.getList()
+    created(){
+      this.change(1)
     }
   }
 </script>

@@ -42,7 +42,9 @@
             align: 'center'
           }
         ],
-        data1: [],
+        data1: [
+        ],
+
         total: 2,
         pageSize: 10,
         pageNuw: 1,
@@ -63,22 +65,20 @@
       },*/
       change(page) {
         var vm = this
+        this.data1=[];
         vm.pageNow = page;
-        console.log(page)
         axios.post('http://localhost:8087/redis/keys', {
           "pageNow": vm.pageNow,
           "pageSize": vm.pageSize
         }, {emulateJSON: true})
           .then(res => {
             var arr_mode = res.data.content.name;
-            console.log(arr_mode)
             vm.total = res.data.content.total;
             for (var i = 0; i < arr_mode.length; i++) {
-              vm.data1[i] = {}
-              console.log(arr_mode[1])
-              vm.data1[i].name=arr_mode[i]
+              vm.data1.push({
+                name: arr_mode[i],
+              })
             }
-            console.log(vm.data1)
           })
       },
     },

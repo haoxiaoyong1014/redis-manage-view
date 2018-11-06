@@ -39,7 +39,23 @@
           {
             title: '操作',
             key: 'actor',
-            align: 'center'
+            align: 'center',
+            render: (h, params) => {
+              return h('div', [
+                h('Button', {
+                  props: {
+                    type: 'text',
+                    size: 'small'
+                  },
+                  on: {
+                    click: () => {
+                      console.log(params.row.name)
+                      this.getValue();
+                    }
+                  }
+                }, '查看详情')
+              ]);
+            }
           }
         ],
         data1: [
@@ -63,6 +79,9 @@
             }
           })
       },*/
+      getValue(){
+
+      }
       change(page) {
         var vm = this
         this.data1=[];

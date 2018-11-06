@@ -20,6 +20,7 @@
 <script>
   import axios from 'axios'
   import 'axios/dist/axios.js'
+  import Modal from '../components/Modal'
 
   export default {
     name: "redis-list",
@@ -49,8 +50,7 @@
                   },
                   on: {
                     click: () => {
-                      console.log(params.row.name)
-                      this.getValue();
+                      this.getValue(params.row.name);
                     }
                   }
                 }, '查看详情')
@@ -58,13 +58,18 @@
             }
           }
         ],
-        data1: [
-        ],
+        data1: [],
 
         total: 2,
         pageSize: 10,
         pageNuw: 1,
+        v1:'',
+        v2:'',
+        v3:''
       }
+    },
+    components: {
+      Modal
     },
     methods: {
       /*getList() {
@@ -79,12 +84,37 @@
             }
           })
       },*/
-      getValue(){
+      getValue(key) {
 
-      }
+        this.$Modal.confirm({
+          scrollable: true,
+          render: (h) => {
+            return h(Modal, {
+              props: {
+                key: '',
+                value: '',
+                type: ''
+              },
+              on: {
+                key: (key) => {
+                  this.v1 = key
+                  console.log(this.v1)
+                },
+                value: (value) => {
+                  this.v2 = value
+                },
+                type:(type)=>{
+                  this.v3=type
+                }
+              }
+
+            })
+          }
+        })
+      },
       change(page) {
         var vm = this
-        this.data1=[];
+        this.data1 = [];
         vm.pageNow = page;
         axios.post('http://localhost:8087/redis/keys', {
           "pageNow": vm.pageNow,
@@ -101,7 +131,7 @@
           })
       },
     },
-    created(){
+    created() {
       this.change(1)
     }
   }

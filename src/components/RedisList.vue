@@ -24,7 +24,7 @@
 
   export default {
     name: "redis-list",
-    data() {
+    data: function () {
       return {
         columns3: [
           {
@@ -39,7 +39,7 @@
           },
           {
             title: 'type',
-            key: 'type',
+            key: 'types',
             align: 'center'
           },
           {
@@ -55,8 +55,8 @@
                   },
                   on: {
                     click: () => {
-                      var value = this.getValueByKey(params.row.name);
-                      this.getValue(params.row.name);
+                      this.getValueByKey(params.row.name, params.row.types);
+                      //this.getValue(params.row.name, params.row.types,this._value);
                     }
                   }
                 }, '查看详情')
@@ -70,30 +70,31 @@
         pageNuw: 1,
         v1: '',
         v2: '',
-        v3: ''
+        v3: '',
+        _value:''
       }
     },
     components: {
       Modal
     },
     methods: {
-      getValueByKey(key) {
-        console.log(key)
-        axios.post('http://localhost:8087/redis/getValue?key='+key)
-          .then(res=>{
-            var value=res.data.content
-            return value;
+      getValueByKey(key,type) {
+        axios.post('http://localhost:8087/redis/getValue?key=' + key+'&type='+type)
+          .then(res => {
+            this._value = res.data.content
+            this.getValue(key, type,this._value);
           })
       },
-      getValue(key) {
+      getValue(key,type,_value) {
+        console.log(_value)
         this.$Modal.confirm({
           scrollable: true,
           render: (h) => {
             return h(Modal, {
-
               props: {
-                key: key
-
+                key: key,
+                type: type,
+                value: _value
               },
               on: {
                 key: (key) => {
@@ -122,10 +123,11 @@
           .then(res => {
             var arr_mode = res.data.content.name;
             vm.total = res.data.content.total;
+            /* console.log(arr_mode)*/
             for (var i = 0; i < arr_mode.length; i++) {
               vm.data1.push({
-                name: arr_mode[i].splice(':')[0],
-                type: arr_mode[i].splice(':')[1]
+                name: arr_mode[i].name,
+                types: arr_mode[i].type
               })
             }
           })

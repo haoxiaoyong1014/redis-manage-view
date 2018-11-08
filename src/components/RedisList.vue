@@ -38,6 +38,11 @@
             align: 'center'
           },
           {
+            title: 'type',
+            key: 'type',
+            align: 'center'
+          },
+          {
             title: '操作',
             key: 'actor',
             align: 'center',
@@ -50,6 +55,7 @@
                   },
                   on: {
                     click: () => {
+                      var value = this.getValueByKey(params.row.name);
                       this.getValue(params.row.name);
                     }
                   }
@@ -59,52 +65,45 @@
           }
         ],
         data1: [],
-
         total: 2,
         pageSize: 10,
         pageNuw: 1,
-        v1:'',
-        v2:'',
-        v3:''
+        v1: '',
+        v2: '',
+        v3: ''
       }
     },
     components: {
       Modal
     },
     methods: {
-      /*getList() {
-        axios.post('http://localhost:8087/redis/keys', {"pageNow": 1, "pageSize": this.pageSize}, {emulateJSON: true})
-          .then(res => {
-            var arr_model = res.data.content.name;
-            this.total = res.data.content.total
-            for (var i = 0; i < arr_model.length; i++) {
-              this.data1.push({
-                name: arr_model[i]
-              })
-            }
+      getValueByKey(key) {
+        console.log(key)
+        axios.post('http://localhost:8087/redis/getValue?key='+key)
+          .then(res=>{
+            var value=res.data.content
+            return value;
           })
-      },*/
+      },
       getValue(key) {
-
         this.$Modal.confirm({
           scrollable: true,
           render: (h) => {
             return h(Modal, {
+
               props: {
-                key: '',
-                value: '',
-                type: ''
+                key: key
+
               },
               on: {
                 key: (key) => {
                   this.v1 = key
-                  console.log(this.v1)
                 },
                 value: (value) => {
                   this.v2 = value
                 },
-                type:(type)=>{
-                  this.v3=type
+                type: (type) => {
+                  this.v3 = type
                 }
               }
 
@@ -125,7 +124,8 @@
             vm.total = res.data.content.total;
             for (var i = 0; i < arr_mode.length; i++) {
               vm.data1.push({
-                name: arr_mode[i],
+                name: arr_mode[i].splice(':')[0],
+                type: arr_mode[i].splice(':')[1]
               })
             }
           })

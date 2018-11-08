@@ -2,15 +2,15 @@
   <Row>
     <div class="wrapper">
       <label>key</label>
-      <Input v-model="key" @on-change="keyChange"/>
+      <Input v-model="key" disabled  @on-change="keyChange" />
     </div>
     <div class="wrapper">
       <label>value</label>
-      <Input v-model="value" @on-change="valueChange"/>
+      <Input v-model="value" disabled @on-change="valueChange"/>
     </div>
     <div class="wrapper">
       <label>type</label>
-      <Input v-model="type" @on-change="typeChange"/>
+      <Input v-model="type" disabled @on-change="typeChange"/>
     </div>
   </Row>
   <!--<ul>
@@ -35,13 +35,27 @@
     name: "Modal",
     data() {
       return {
-        key: 'dsf',
-        value: 'kk',
-        type: 'dfs'
+
       }
     },
-    methods:{
-      keyChange:function(){
+    props: {
+      key: {
+        type: String,
+        default: 'SS'
+      },
+      value: {
+        type: String,
+        default: 'ss'
+      },
+      type: {
+        type: String,
+        default: 'ss'
+      },
+
+    },
+
+    methods: {
+      keyChange: function () {
         var obj = this
         this.$emit('key', obj.key)
       },

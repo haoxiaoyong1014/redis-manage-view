@@ -2,15 +2,16 @@
   <Row>
     <div class="wrapper">
       <label>key</label>
-      <Input v-model="key" disabled  @on-change="keyChange" />
+      <Input v-model="key" readonly @on-change="keyChange" size="large" />
     </div>
     <div class="wrapper">
-      <label>value</label>
-      <Input v-model="value" disabled @on-change="valueChange"/>
+      <label>value</label><br/>
+      <Input v-model="value" readonly @on-change="valueChange"  size="large"/>
+     <!-- <span>{{value}}</span>-->
     </div>
     <div class="wrapper">
       <label>type</label>
-      <Input v-model="type" disabled @on-change="typeChange"/>
+      <Input v-model="type" readonly @on-change="typeChange"  size="large"/>
     </div>
   </Row>
   <!--<ul>
@@ -45,7 +46,7 @@
       },
       value: {
         type: String,
-        default: 'ss'
+        default: 'ff'
       },
       type: {
         type: String,
@@ -53,7 +54,6 @@
       },
 
     },
-
     methods: {
       keyChange: function () {
         var obj = this
@@ -71,6 +71,9 @@
   }
 </script>
 
-<style scoped>
-
+<style>
+  .ivu-input {
+    /*background-color:#515a6e !important;*/
+    font-size: 15px;
+  }
 </style>

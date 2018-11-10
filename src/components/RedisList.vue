@@ -83,16 +83,16 @@
           .then(res => {
             this._value = res.data.content
             var arr_value = this._value
-            console.log(arr_value)
             var result = ''
             for (var i = 0; i < arr_value.length; i++) {
              result += arr_value[i].keyAndValue+' '
             }
-            this.getValue(key, type, result);
+           var res= result.replace(/["]/g," ");
+            console.log(res)
+            this.getValue(key, type, res);
           })
       },
       getValue(key, type, _value) {
-        console.log(_value)
         this.$Modal.confirm({
           scrollable: true,
           okText: 'OK',

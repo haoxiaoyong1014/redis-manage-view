@@ -2,15 +2,16 @@
   <Row>
     <div class="wrapper">
       <label>key</label>
-      <Input v-model="key" @on-change="keyChange"/>
+      <Input v-model="key" readonly @on-change="keyChange" size="large" />
     </div>
     <div class="wrapper">
-      <label>value</label>
-      <Input v-model="value" @on-change="valueChange"/>
+      <label>value</label><br/>
+      <Input v-model="value" readonly @on-change="valueChange"  size="large"/>
+     <!-- <span>{{value}}</span>-->
     </div>
     <div class="wrapper">
       <label>type</label>
-      <Input v-model="type" @on-change="typeChange"/>
+      <Input v-model="type" readonly @on-change="typeChange"  size="large"/>
     </div>
   </Row>
   <!--<ul>
@@ -35,13 +36,26 @@
     name: "Modal",
     data() {
       return {
-        key: 'dsf',
-        value: 'kk',
-        type: 'dfs'
+
       }
     },
-    methods:{
-      keyChange:function(){
+    props: {
+      key: {
+        type: String,
+        default: 'SS'
+      },
+      value: {
+        type: String,
+        default: 'ff'
+      },
+      type: {
+        type: String,
+        default: 'ss'
+      },
+
+    },
+    methods: {
+      keyChange: function () {
         var obj = this
         this.$emit('key', obj.key)
       },
@@ -57,6 +71,9 @@
   }
 </script>
 
-<style scoped>
-
+<style>
+  .ivu-input {
+    /*background-color:#515a6e !important;*/
+    font-size: 15px;
+  }
 </style>

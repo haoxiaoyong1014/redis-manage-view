@@ -85,7 +85,6 @@
           })
       },*/
       getValue(key) {
-
         this.$Modal.confirm({
           scrollable: true,
           render: (h) => {
@@ -98,7 +97,7 @@
               on: {
                 key: (key) => {
                   this.v1 = key
-                  console.log(this.v1)
+
                 },
                 value: (value) => {
                   this.v2 = value
@@ -111,6 +110,7 @@
             })
           }
         })
+        console.log(this.v1)
       },
       change(page) {
         var vm = this

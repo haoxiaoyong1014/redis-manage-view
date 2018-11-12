@@ -32,24 +32,22 @@
             </FormItem>
           </Col>
         </Row>
-          <Row :gutter="32">
-          <Col span="16">
-            <FormItem label="PASSWORLD" label-position="top">
-              <Input v-model="formData.password" placeholder="please enter user password" />
-            </FormItem>
-          </Col>
-          </Row>
         <Row :gutter="32">
           <Col span="16">
+            <FormItem label="PASSWORLD" label-position="top">
+              <Input v-model="formData.password" placeholder="please enter user password"/>
+            </FormItem>
+          </Col>
+          <Col span="16">
             <FormItem label="PORT" label-position="top">
-              <Input v-model="formData.port" placeholder="please enter user port" />
+              <Input v-model="formData.port" placeholder="please enter user port"/>
             </FormItem>
           </Col>
         </Row>
       </Form>
       <div class="demo-drawer-footer">
         <Button style="margin-right: 8px" @click="value3 = false">Cancel</Button>
-        <Button type="primary" @click="value3 = false">Submit</Button>
+        <Button type="primary" @click="handleAdd">Submit</Button>
       </div>
     </Drawer>
     <Table highlight-row ref="currentRowTable" :columns="columns3" :data="data1"></Table>
@@ -196,6 +194,28 @@
             }
           })
       },
+      handleAdd(){
+        this.value3=false;
+        this.data1 = [];
+        axios.post('http://localhost:8087/redis/add_server', {
+          "host": this.formData.host,
+          "password": this.formData.password,
+          "port":this.formData.port,
+          "pageNow": this.pageNuw,
+          "pageSize": this.pageSize
+        }, {emulateJSON: true})
+          .then(res=>{
+            var arr_mode = res.data.content.name;
+            this.total = res.data.content.total;
+            /* console.log(arr_mode)*/
+            for (var i = 0; i < arr_mode.length; i++) {
+              this.data1.push({
+                name: arr_mode[i].name,
+                types: arr_mode[i].type
+              })
+            }
+          })
+      }
     },
     created() {
       this.change(1)

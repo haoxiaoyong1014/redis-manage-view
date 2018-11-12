@@ -7,6 +7,9 @@
         <Menu mode="horizontal" theme="dark" active-name="1">
           <div class="layout-nav">
             <MenuItem name="1">
+              <Button :size="buttonSize" type="default" icon="ios-add-circle-outline" @click="value3 = true" >add Server</Button>
+            </MenuItem>
+            <MenuItem name="2">
               <Icon type="ios-navigate"></Icon>
               Manage redis server
             </MenuItem>
@@ -14,6 +17,41 @@
         </Menu>
       </Header>
     </Layout>
+    <Drawer
+      title="add Server"
+      v-model="value3"
+      width="520"
+      :mask-closable="false"
+      :styles="styles"
+    >
+      <Form :model="formData">
+        <Row :gutter="32">
+          <Col span="16">
+            <FormItem label="HOST" label-position="top">
+              <Input v-model="formData.host" placeholder="please enter user host" />
+            </FormItem>
+          </Col>
+        </Row>
+          <Row :gutter="32">
+          <Col span="16">
+            <FormItem label="PASSWORLD" label-position="top">
+              <Input v-model="formData.password" placeholder="please enter user password" />
+            </FormItem>
+          </Col>
+          </Row>
+        <Row :gutter="32">
+          <Col span="16">
+            <FormItem label="PORT" label-position="top">
+              <Input v-model="formData.port" placeholder="please enter user port" />
+            </FormItem>
+          </Col>
+        </Row>
+      </Form>
+      <div class="demo-drawer-footer">
+        <Button style="margin-right: 8px" @click="value3 = false">Cancel</Button>
+        <Button type="primary" @click="value3 = false">Submit</Button>
+      </div>
+    </Drawer>
     <Table highlight-row ref="currentRowTable" :columns="columns3" :data="data1"></Table>
     <Page :total=total @on-change="change"></Page>
   </div>
@@ -22,6 +60,7 @@
   import axios from 'axios'
   import 'axios/dist/axios.js'
   import Modal from '../components/Modal'
+
 
   export default {
     name: "redis-list",
@@ -72,7 +111,21 @@
         v1: '',
         v2: '',
         v3: '',
-        _value: []
+        _value: [],
+        buttonSize: 'large',
+        value3: false,
+        styles: {
+          height: 'calc(100% - 55px)',
+          overflow: 'auto',
+          paddingBottom: '53px',
+          position: 'static'
+        },
+        formData: {
+          host: '',
+          password: '',
+          port: ''
+        },
+
       }
     },
     components: {
@@ -93,6 +146,7 @@
             this.getValue(key, type, res);
           })
       },
+
       getValue(key, type, _value) {
         this.$Modal.confirm({
           scrollable: true,
@@ -120,6 +174,7 @@
             })
           }
         })
+        console.log(this.v1)
       },
       change(page) {
         var vm = this
@@ -162,5 +217,15 @@
     position: relative;
     border-radius: 4px;
     overflow: hidden;
+  }
+  .demo-drawer-footer{
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border-top: 1px solid #e8e8e8;
+    padding: 10px 16px;
+    text-align: right;
+    background: #fff;
   }
 </style>

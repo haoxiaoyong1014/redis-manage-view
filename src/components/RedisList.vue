@@ -7,9 +7,24 @@
         <Menu mode="horizontal" theme="dark" active-name="1">
           <div class="layout-nav">
             <MenuItem name="1">
-              <Button :size="buttonSize" type="default" icon="ios-add-circle-outline" @click="value3 = true" >add Server</Button>
+              <Button :size="buttonSize" type="default" icon="ios-add-circle-outline" @click="value3 = true">add
+                Server
+              </Button>
             </MenuItem>
             <MenuItem name="2">
+              <Select v-model="model3" style="width:100px" size="large">
+                <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+              </Select>
+            </MenuItem>
+            <MenuItem name="3">
+              <Input v-model="paramer" placeholder="please enter query paramer" size="large" search
+                     enter-button="Search" style="top:13px" @on-search="search"/>
+              <!--<Span style="color: red" v-show="show">please enter query paramer</Span>-->
+            </MenuItem>
+            <!-- <MenuItem name="4">
+             <Button>Query</Button>
+           </MenuItem>-->
+            <MenuItem name="4">
               <Icon type="ios-navigate"></Icon>
               Manage redis server
             </MenuItem>
@@ -27,21 +42,21 @@
       <Form :model="formData">
         <Row :gutter="32">
           <Col span="16">
-            <FormItem label="HOST" label-position="top">
-              <Input v-model="formData.host" placeholder="please enter user host" />
-            </FormItem>
+          <FormItem label="HOST" label-position="top">
+            <Input v-model="formData.host" placeholder="please enter user host"/>
+          </FormItem>
           </Col>
         </Row>
         <Row :gutter="32">
           <Col span="16">
-            <FormItem label="PASSWORLD" label-position="top">
-              <Input v-model="formData.password" placeholder="please enter user password"/>
-            </FormItem>
+          <FormItem label="PASSWORLD" label-position="top">
+            <Input v-model="formData.password" placeholder="please enter user password"/>
+          </FormItem>
           </Col>
           <Col span="16">
-            <FormItem label="PORT" label-position="top">
-              <Input v-model="formData.port" placeholder="please enter user port"/>
-            </FormItem>
+          <FormItem label="PORT" label-position="top">
+            <Input v-model="formData.port" placeholder="please enter user port"/>
+          </FormItem>
           </Col>
         </Row>
       </Form>
@@ -119,10 +134,23 @@
           position: 'static'
         },
         formData: {
-          host: '',
-          password: '',
-          port: ''
+          host: '114.215.42.166',
+          password: 'huluwa890TJ',
+          port: 6379
         },
+
+        cityList: [
+          {
+            value: '1',
+            label: '*like*'
+          },
+          {
+            value: '2',
+            label: 'like*'
+          }
+        ],
+        paramer: '',
+        model3: 2,
 
       }
     },
@@ -137,14 +165,16 @@
             var arr_value = this._value
             var result = ''
             for (var i = 0; i < arr_value.length; i++) {
-             result += arr_value[i].keyAndValue+' '
+              result += arr_value[i].keyAndValue + ' '
             }
-           var res= result.replace(/["]/g," ");
+            var res = result.replace(/["]/g, " ");
             console.log(res)
             this.getValue(key, type, res);
           })
       },
-
+      error() {
+        this.$Message.error('Please enter query paramer');
+      },
       getValue(key, type, _value) {
         this.$Modal.confirm({
           scrollable: true,
@@ -179,8 +209,10 @@
         this.data1 = [];
         vm.pageNow = page;
         axios.post('http://localhost:8087/redis/keys', {
+          "cond": this.paramer,
+          "num": this.model3,
           "pageNow": vm.pageNow,
-          "pageSize": vm.pageSize
+          "pageSize": vm.pageSize,
         }, {emulateJSON: true})
           .then(res => {
             var arr_mode = res.data.content.name;
@@ -194,17 +226,17 @@
             }
           })
       },
-      handleAdd(){
-        this.value3=false;
+      handleAdd() {
+        this.value3 = false;
         this.data1 = [];
         axios.post('http://localhost:8087/redis/add_server', {
           "host": this.formData.host,
           "password": this.formData.password,
-          "port":this.formData.port,
+          "port": this.formData.port,
           "pageNow": this.pageNuw,
           "pageSize": this.pageSize
         }, {emulateJSON: true})
-          .then(res=>{
+          .then(res => {
             var arr_mode = res.data.content.name;
             this.total = res.data.content.total;
             /* console.log(arr_mode)*/
@@ -215,7 +247,22 @@
               })
             }
           })
-      }
+      },
+      search() {
+        if (this.paramer == '') {
+          this.error()
+        } else {
+          this.change(this.pageNow)
+          /*console.log(this.model3)
+          axios.post('http://localhost:8087/redis/like_select', {
+            "cond": this.paramer,
+            "num": this.model3,
+            "pageNow": this.pageNuw,
+            "pageSize": this.pageSize
+          }, {emulateJSON: true})*/
+        }
+
+      },
     },
     created() {
       this.change(1)
@@ -238,7 +285,8 @@
     border-radius: 4px;
     overflow: hidden;
   }
-  .demo-drawer-footer{
+
+  .demo-drawer-footer {
     width: 100%;
     position: absolute;
     bottom: 0;

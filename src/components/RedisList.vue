@@ -6,6 +6,9 @@
       <Header style="top: 0px">
         <Menu mode="horizontal" theme="dark" active-name="1">
           <div class="layout-nav">
+             <MenuItem name="4">
+               <Button type="primary" :size="buttonSize" icon="md-sync" @click="Onbutton">refresh</Button>
+           </MenuItem>
             <MenuItem name="1">
               <Button :size="buttonSize" type="default" icon="ios-add-circle-outline" @click="value3 = true">add
                 Server
@@ -21,10 +24,7 @@
                      enter-button="Search" style="top:13px" @on-search="search"/>
               <!--<Span style="color: red" v-show="show">please enter query paramer</Span>-->
             </MenuItem>
-            <!-- <MenuItem name="4">
-             <Button>Query</Button>
-           </MenuItem>-->
-            <MenuItem name="4">
+            <MenuItem name="5">
               <Icon type="ios-navigate"></Icon>
               Manage redis server
             </MenuItem>
@@ -151,6 +151,7 @@
         ],
         paramer: '',
         model3: 2,
+        value4: ''
 
       }
     },
@@ -213,6 +214,7 @@
           "num": this.model3,
           "pageNow": vm.pageNow,
           "pageSize": vm.pageSize,
+          "refresh" : this.value4
         }, {emulateJSON: true})
           .then(res => {
             var arr_mode = res.data.content.name;
@@ -234,7 +236,7 @@
           "password": this.formData.password,
           "port": this.formData.port,
           "pageNow": this.pageNuw,
-          "pageSize": this.pageSize
+          "pageSize": this.pageSize,
         }, {emulateJSON: true})
           .then(res => {
             var arr_mode = res.data.content.name;
@@ -261,8 +263,11 @@
             "pageSize": this.pageSize
           }, {emulateJSON: true})*/
         }
-
       },
+      Onbutton(){
+        this.value4='button'
+        this.change(this.pageNow)
+      }
     },
     created() {
       this.change(1)

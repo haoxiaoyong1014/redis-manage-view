@@ -6,9 +6,9 @@
       <Header style="top: 0px">
         <Menu mode="horizontal" theme="dark" active-name="1">
           <div class="layout-nav">
-             <MenuItem name="4">
-               <Button type="primary" :size="buttonSize" icon="md-sync" @click="Onbutton">refresh</Button>
-           </MenuItem>
+            <MenuItem name="4">
+              <Button type="primary" :size="buttonSize" icon="md-sync" @click="Onbutton">refresh</Button>
+            </MenuItem>
             <MenuItem name="1">
               <Button :size="buttonSize" type="default" icon="ios-add-circle-outline" @click="value3 = true">add
                 Server
@@ -135,7 +135,7 @@
         },
         formData: {
           host: '114.215.42.166',
-          password: 'huluwa890TJ',
+          password: 'huluwa890T',
           port: 6379
         },
 
@@ -214,7 +214,7 @@
           "num": this.model3,
           "pageNow": vm.pageNow,
           "pageSize": vm.pageSize,
-          "refresh" : this.value4
+          "refresh": this.value4
         }, {emulateJSON: true})
           .then(res => {
             var arr_mode = res.data.content.name;
@@ -251,6 +251,7 @@
           })
       },
       search() {
+        this.value4 ='';
         if (this.paramer == '') {
           this.error()
         } else {
@@ -264,8 +265,9 @@
           }, {emulateJSON: true})*/
         }
       },
-      Onbutton(){
-        this.value4='button'
+      Onbutton() {
+        this.value4 = 'button';
+        this.paramer='';
         this.change(this.pageNow)
       }
     },

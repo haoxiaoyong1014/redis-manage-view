@@ -15,7 +15,7 @@
               </Button>
             </MenuItem>
             <MenuItem name="2">
-              <Select v-model="model3" style="width:100px" size="large">
+              <Select v-model="model3" style="width:100px" size="large" @on-change="Onselect(model3)">
                 <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
               </Select>
             </MenuItem>
@@ -135,22 +135,22 @@
         },
         formData: {
           host: '114.215.42.166',
-          password: 'huluwa890T',
+          password: 'xxxxx',
           port: 6379
         },
 
         cityList: [
           {
             value: '1',
-            label: '*like*'
+            label: 'like*'
           },
           {
             value: '2',
-            label: 'like*'
+            label: '*like*'
           }
         ],
         paramer: '',
-        model3: 2,
+        model3: '',
         value4: ''
 
       }
@@ -210,11 +210,11 @@
         this.data1 = [];
         vm.pageNow = page;
         axios.post('http://localhost:8087/redis/keys', {
-          "cond": this.paramer,
-          "num": this.model3,
+          "cond": vm.paramer,
+          "num": vm.model3,
           "pageNow": vm.pageNow,
           "pageSize": vm.pageSize,
-          "refresh": this.value4
+          "refresh": vm.value4
         }, {emulateJSON: true})
           .then(res => {
             var arr_mode = res.data.content.name;
@@ -269,7 +269,8 @@
         this.value4 = 'button';
         this.paramer='';
         this.change(this.pageNow)
-      }
+      },
+
     },
     created() {
       this.change(1)

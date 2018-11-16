@@ -2,6 +2,16 @@
 
 > redis-manage-view
 
+**最终展示效果图**
+
+![image](https://github.com/haoxiaoyong1014/redis-manage/raw/master/redis-manage.gif)
+
+
+**项目地址**
+
+* 后端项目地址: https://github.com/haoxiaoyong1014/redis-manage 
+
+
 ## Build Setup
 
 ``` bash
